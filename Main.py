@@ -2,14 +2,13 @@ import json
 import os
 import random as rd
 import requests
-from google import genai  # Note the new import name
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# 1. Modern Configuration
 client = genai.Client(api_key=os.getenv("gemini_api_key"))
-TARGET_WEBHOOK_URL = "https://webhook.site/7b65420d-bbe2-40b7-b1ec-f6df15a9b5b0"
+TARGET_WEBHOOK_URL = os.getenv("TARGET_WEBHOOK_URL")
 
 
 def analyze_customer_query(customer_text):
@@ -21,7 +20,6 @@ def analyze_customer_query(customer_text):
     JSON keys: category, priority, sentiment, suggested_action
     """
 
-    # The modern way to call Gemini
     response = client.models.generate_content(
         model="gemini-flash-latest",
         contents=prompt,
