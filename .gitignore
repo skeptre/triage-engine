@@ -11,5 +11,3 @@
 # Python: Hide compiled files
 __pycache__/
 *.pyc
-
-.idea
