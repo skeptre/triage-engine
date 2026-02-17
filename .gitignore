@@ -1,0 +1,16 @@
+# Security: Hide your API keys
+.env
+
+# Environment: Hide your local virtual environment
+.venv/
+
+# IDE: Hide IntelliJ's internal settings
+.idea/
+*.iml
+
+# Python: Hide compiled files
+__pycache__/
+*.pyc
+
+*.xml
+.idea
