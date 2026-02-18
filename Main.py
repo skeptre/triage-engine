@@ -12,7 +12,6 @@ TARGET_WEBHOOK_URL = os.getenv("TARGET_WEBHOOK_URL")
 
 
 def analyze_customer_query(customer_text):
-    """Uses the modern 2026 SDK to analyze intent."""
     prompt = f"""
     Analyze the following customer support message and return ONLY a JSON object:
     "{customer_text}"
@@ -35,22 +34,29 @@ def push_to_client_system(data):
     return response.status_code
 
 
-if __name__ == "__main__":
+def run_simulation():
+    """Encapsulates the testing logic for easy execution."""
     if os.path.exists("queries.txt"):
-        with open ("queries.txt", "r") as f:
+        with open("queries.txt", "r") as f:
             test_queries = f.readlines()
-
         sample_query = rd.choice(test_queries).strip()
     else:
         sample_query = "Default query: The queries.txt file was not found!"
+
     print(f"🎲 Source: queries.txt | Selected: '{sample_query}'")
-
     print("🤖 Analyzing Query via Modern GenAI SDK...")
-    analysis = analyze_customer_query(sample_query)
 
+    # Run the core logic
+    analysis = analyze_customer_query(sample_query)
     analysis_dict = json.loads(analysis)
+
     print(f"📤 Pushing Analysis: {analysis}")
     status = push_to_client_system(analysis_dict)
 
     if status == 200:
         print("✅ Success: Data delivered to Webhook.site.")
+
+
+# This is the "Ignition Switch"
+if __name__ == "__main__":
+    run_simulation()
