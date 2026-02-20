@@ -6,4 +6,4 @@ services:
       - .env
     volumes:
       - ./queries.txt:/app/queries.txt
-    restart: always
+    restart: "no"

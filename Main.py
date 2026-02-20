@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
-client = genai.Client(api_key=os.getenv("gemini_api_key"))
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 TARGET_WEBHOOK_URL = os.getenv("TARGET_WEBHOOK_URL")
 
 
