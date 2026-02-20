@@ -18,11 +18,11 @@ def analyse_customer_query(customer_text):
     Analyse the following customer support message and return ONLY a JSON object:
     "{customer_text}"
     
-    JSON keys: category, priority, sentiment, suggested_action
+    JSON keys: original_message, category, priority, sentiment, suggested_action
     """
 
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="gemini-flash-latest",
         contents=prompt,
         config={'response_mime_type': 'application/json'}
     )
@@ -58,7 +58,7 @@ def push_to_client_system(data):
         return 500
 
 
-def run_simulation(iterations=3):
+def run_simulation(iterations=2):
     """Enhanced Simulation: Demonstrates batch stability and error handling."""
     print(f"🚀 Starting AI Triage Simulation ({iterations} rounds)...")
 
@@ -90,4 +90,4 @@ def run_simulation(iterations=3):
 
 
 if __name__ == "__main__":
-    run_simulation(iterations=3)
+    run_simulation(iterations=1)

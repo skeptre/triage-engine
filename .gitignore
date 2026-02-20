@@ -1,13 +1,56 @@
-# Security: Hide your API keys
+# Security: Highly critical to prevent API key leaks
 .env
 
-# Environment: Hide your local virtual environment
+# Environment: Ignore all variations of local virtual environments
 .venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# IDE: Hide IntelliJ's internal settings
-.idea/
-*.iml
-
-# Python: Hide compiled files
+# Python: Ignore compiled code and metadata
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+.ipynb_checkpoints
+
+# IDEs: Cover both IntelliJ and VS Code
+.idea/
+*.iml
+.vscode/
+.project
+.pydevproject
+.settings/
+
+# Docker: Only ignore local data volumes or temporary docker files
+# DO NOT ignore .dockerignore, Dockerfile, or docker-compose.yml
+.docker/
+
+# Operating System: Prevent system "junk" files from being committed
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and local data
+*.log
+local_settings.py

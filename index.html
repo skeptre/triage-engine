@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Triage Monitor | Focus Group Prototype</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #1a365d;
+            margin-top: 0;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .status-card {
+            border-left: 6px solid #3182ce;
+            background: #ebf8ff;
+            padding: 25px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .message-content {
+            background: white;
+            padding: 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .priority-high {
+            color: #e53e3e;
+            font-weight: 900;
+            background: #fff5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #feb2b2;
+        }
+
+        .note-box {
+            background: #fffaf0;
+            border: 1px solid #fbd38d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI Customer Triage Monitor</h1>
+    <p>Operational dashboard for real-time customer intent analysis.</p>
+
+    <div class="status-card">
+        <div class="label">Incoming Message</div>
+        <div id="query-text" class="message-content">Waiting for simulation to start...</div>
+
+        <p>
+            <strong>Category:</strong> <span id="category-tag">-</span> |
+            <strong>Sentiment:</strong> <span id="sentiment-tag">-</span> |
+            <strong>Priority:</strong> <span id="priority-tag">-</span>
+        </p>
+
+        <div class="note-box">
+            <div class="label">Business Implementation Logic</div>
+            <p id="note-text" style="font-size: 1.1rem; margin: 10px 0;">-</p>
+            <p><strong>Routing To:</strong> <span id="routing-tag">-</span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+	async function updateDashboard() {
+		// IMPORTANT: Replace with your actual Webhook.site Token ID
+		const webhook_token = "7b65420d-bbe2-40b7-b1ec-f6df15a9b5b0";
+		const url = `https://webhook.site/token/${webhook_token}/requests?sorting=newest`;
+
+		try {
+			const response = await fetch(url);
+			const result = await response.json();
+
+			if (result.data && result.data.length > 0) {
+				// Parse the JSON string sent by your Python script
+				const latest = JSON.parse(result.data[0].content);
+
+				// Map the Python keys to the HTML IDs
+				document.getElementById('query-text').innerText = latest.original_message || "No text received";
+				document.getElementById('category-tag').innerText = latest.category;
+				document.getElementById('sentiment-tag').innerText = latest.sentiment;
+				document.getElementById('note-text').innerText = latest.internal_note;
+				document.getElementById('routing-tag').innerText = latest.routing_target;
+
+				// Handle Priority Styling
+				const pTag = document.getElementById('priority-tag');
+				pTag.innerText = latest.priority;
+				pTag.className = latest.priority === 'High' ? 'priority-high' : '';
+			}
+		} catch (error) {
+			console.error("Dashboard Sync Error:", error);
+		}
+	}
+
+	// Check for new data every 3 seconds
+	setInterval(updateDashboard, 3000);
+	updateDashboard(); // Initial check
+</script>
+
+</body>
+</html>

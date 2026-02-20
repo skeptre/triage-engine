@@ -1,0 +1,9 @@
+services:
+  triage-engine:
+    build: .
+    container_name: ai_triage_engine
+    env_file:
+      - .env
+    volumes:
+      - ./queries.txt:/app/queries.txt
+    restart: always
